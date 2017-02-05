@@ -73,7 +73,7 @@ with g.as_default(), g.device('/gpu:0'), tf.Session() as sess:
 from sys import stderr
 
 #ALPHA= 1e-2
-ALPHA = 1e-4
+ALPHA = 1e-3
 learning_rate= 1e-3
 iterations = 100
 
