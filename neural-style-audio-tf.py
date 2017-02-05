@@ -30,9 +30,8 @@ N_CHANNELS = a_content.shape[0]
 a_content = a_content[:N_CHANNELS,:N_SAMPLES]
 a_style = a_style[:N_CHANNELS,:N_SAMPLES]
 
-
 N_FILTERS = 4096
-KERNEL_SIZE = 5
+KERNEL_SIZE = 10
 
 a_content_tf = np.ascontiguousarray(a_content.T[None,None,:,:])
 a_style_tf = np.ascontiguousarray(a_style.T[None,None,:,:])
