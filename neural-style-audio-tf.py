@@ -30,8 +30,8 @@ N_CHANNELS = a_content.shape[0]
 a_content = a_content[:N_CHANNELS,:N_SAMPLES]
 a_style = a_style[:N_CHANNELS,:N_SAMPLES]
 
-N_FILTERS = 4096
-KERNEL_SIZE = 10
+N_FILTERS = 8192
+KERNEL_SIZE = 5
 
 a_content_tf = np.ascontiguousarray(a_content.T[None,None,:,:])
 a_style_tf = np.ascontiguousarray(a_style.T[None,None,:,:])
@@ -61,8 +61,7 @@ with g.as_default(), g.device('/gpu:0'), tf.Session() as sess:
     features = np.reshape(style_features, (-1, N_FILTERS))
     style_gram = np.matmul(features.T, features) / N_SAMPLES
 
-ALPHA = 1e-4
-learning_rate= 1e-3
+ALPHA = 5e-5
 ITERATIONS = 300
 
 result = None
@@ -96,13 +95,7 @@ with tf.Graph().as_default():
     loss = content_loss + style_loss
 
     opt = tf.contrib.opt.ScipyOptimizerInterface(
-          loss, method='L-BFGS-B', options={'maxiter': ITERATIONS})
-
-    step_i = [0]
-    def callback(*args):
-        step_i[0] += 1
-        sys.stdout.write('Optimization step: %-3d\r' % step_i[0])
-        sys.stdout.flush()
+          loss, method='L-BFGS-B', options={'maxiter': ITERATIONS, 'disp': True})
 
     # Optimization
     with tf.Session() as sess:
@@ -110,7 +103,7 @@ with tf.Graph().as_default():
        
         print('Started optimization.')
 
-        opt.minimize(sess, loss_callback=callback)
+        opt.minimize(sess)
     
         print('\nFinal loss:', loss.eval())
         result = x.eval()
