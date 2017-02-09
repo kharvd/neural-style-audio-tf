@@ -19,7 +19,7 @@ STYLE_FILENAME = "inputs/english_woman_44100.wav"
 N_FFT = 2048
 FFT_HOP_SIZE = N_FFT / 4
 N_FILTERS = 8196
-KERNEL_SIZE = 5
+KERNEL_SIZE = 11
 
 a_content, fs = read_audio(CONTENT_FILENAME)
 a_style, _ = read_audio(STYLE_FILENAME)
@@ -77,7 +77,7 @@ with g.as_default(), g.device('/gpu:0'), tf.Session() as sess:
     style_gram = np.matmul(features.T, features) / N_SAMPLES
 
 CONTENT_WEIGHT = 0
-STYLE_WEIGHT = 1000
+STYLE_WEIGHT = 1
 ITERATIONS = 300
 
 result = None
